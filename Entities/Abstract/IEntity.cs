@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Entities.Abstract
 {
-    //IEntity implemente eden class veritabanı tablosudur
+    //IEntity implement eden class bir veritabanı tablosudur
     public interface IEntity
     {
-
     }
 }

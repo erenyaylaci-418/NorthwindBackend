@@ -5,17 +5,20 @@ using System;
 
 namespace ConsoleUI
 {
+    //SOLID
+    //Open Closed Principle
     class Program
     {
-        //SOLID
-        //Open Closed Principle
         static void Main(string[] args)
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var product in productManager.GetAllByCategoryId(1))
+
+            foreach (var product in productManager.GetAll())
             {
                 Console.WriteLine(product.ProductName);
             }
+
+            
         }
     }
 }

@@ -1,7 +1,10 @@
 {
   "profiles": {
     "DataAccess": {
-      "commandName": "Project"
+      "commandName": "Executable"
+    },
+    "ConsoleUI": {
+      "commandName": "Executable"
     }
   }
 }
