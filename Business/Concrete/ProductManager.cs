@@ -4,6 +4,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
@@ -20,18 +21,21 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
+        ICategoryService _categoryService;
       
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal,ICategoryService categoryService)
         {
             
             _productDal = productDal;
+            _categoryService = categoryService;
             
         }
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            if (CheckIfProductCountOfCategory(product.CategoryId).Success && CheckIfProductNameExists(product.ProductName).Success)
+            IResult result = BusinessRules.Run(CheckIfProductCountOfCategory(product.CategoryId), CheckIfProductNameExists(product.ProductName));
+            if (result.Success)
             {
                 _productDal.Add(product);
                 return new SuccessResult(Messages.ProductAdded);
@@ -78,7 +82,8 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(Product product)
         {
-            if (CheckIfProductCountOfCategory(product.CategoryId).Success && CheckIfProductNameExists(product.ProductName).Success)
+            IResult result = BusinessRules.Run(CheckIfProductCountOfCategory(product.CategoryId), CheckIfProductNameExists(product.ProductName));
+            if (result.Success)
             {
                 _productDal.Update(product);
                 return new SuccessResult(Messages.ProductAdded);
@@ -103,6 +108,16 @@ namespace Business.Concrete
         {
             var result = _productDal.GetAll(p => p.ProductName == productName).Any();
             if (result)
+            {
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+            return new SuccessResult();
+        }
+        private IResult CheckIfCategoryCount()
+        {
+          
+            var result = _categoryService.GetAll().Data.Count;
+            if (result > 15)
             {
                 return new ErrorResult(Messages.ProductNameAlreadyExists);
             }
