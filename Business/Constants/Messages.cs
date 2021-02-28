@@ -1,6 +1,7 @@
 ﻿using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -12,6 +13,7 @@ namespace Business.Constants
         public  static string MaintenanceTime = "Sistem Bakımda" ;
         public static string ProductsListed="Ürünler Listelendi";
         public  static string ProductCountOfCategoryError;
-        internal static string ProductNameAlreadyExists;
+        public static string ProductNameAlreadyExists;
+        public static string AuthorizationDenied ="Yetkiniz yok";
     }
 }
