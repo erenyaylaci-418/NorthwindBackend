@@ -48,7 +48,7 @@ namespace Business.Concrete
           
            
         }
-
+        //[CacheAspect]//key,value
         public IDataResult<List<Product>> GetAll()
         {
             //İş kodları
