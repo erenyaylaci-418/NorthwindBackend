@@ -7,33 +7,42 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]//Attrıbute
+    [ApiController]
     public class ProductsController : ControllerBase
     {
+        //Loosely coupled
+        //naming convention
+        //IoC Container -- Inversion of Control
         IProductService _productService;
-        //Swagger
+
         public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
-         
+
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            
-            var result = _productService.GetAll();
+            //Swagger
+            //Dependency chain --
+
+            Thread.Sleep(1000);
+
+            var result =  _productService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
         }
+
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
@@ -42,9 +51,34 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result);
 
+            return BadRequest(result);
         }
+
+        [HttpGet("getbycategory")]
+        public IActionResult GetByCategory(int categoryId)
+        {
+            var result = _productService.GetAllByCategoryId(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getproductdetails")]
+        public IActionResult GetProductDetails(int categoryId)
+        {
+            var result = _productService.GetProductDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPost("add")]
         public IActionResult Add(Product product)
         {
@@ -53,7 +87,12 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
+
+
     }
 }
+
+
+//22.05 DERSTEYİZ

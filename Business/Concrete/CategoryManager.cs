@@ -17,15 +17,16 @@ namespace Business.Concrete
             _categoryDal = categoryDal;
         }
 
-        
-        IDataResult<List<Category>> ICategoryService.GetAll()
+        public IDataResult<List<Category>> GetAll()
         {
+            //İş kodları
             return new SuccessDataResult<List<Category>>(_categoryDal.GetAll());
         }
 
-        IDataResult<Category> ICategoryService.GetById(int categoryId)
+        //Select * from Categories where CategoryId = 3
+        public IDataResult<Category> GetById(int categoryId)
         {
-            return new SuccessDataResult<Category>(_categoryDal.Get(c => c.CategoryId == categoryId));
+            return new SuccessDataResult<Category>(_categoryDal.Get(c=>c.CategoryId == categoryId));
         }
     }
 }

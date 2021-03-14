@@ -1,5 +1,4 @@
 ﻿using Business.Abstract;
-using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
@@ -33,7 +32,7 @@ namespace Business.Concrete
                 Status = true
             };
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, "Kayıt oldunuz");
+            return new SuccessDataResult<User>(user, "Kayıt oldu");
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
@@ -46,7 +45,7 @@ namespace Business.Concrete
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
-                return new ErrorDataResult<User>("parola hatası");
+                return new ErrorDataResult<User>("Parola hatası");
             }
 
             return new SuccessDataResult<User>(userToCheck, "Başarılı giriş");
@@ -56,7 +55,7 @@ namespace Business.Concrete
         {
             if (_userService.GetByMail(email) != null)
             {
-                return new ErrorResult("Kullanıcı Mevcut");
+                return new ErrorResult("Kullanıcı mevcut");
             }
             return new SuccessResult();
         }
@@ -65,7 +64,7 @@ namespace Business.Concrete
         {
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
-            return new SuccessDataResult<AccessToken>(accessToken,"Tokun oluşturuldu");
+            return new SuccessDataResult<AccessToken>(accessToken, "Token oluşturuldu");
         }
     }
 }
